@@ -54,5 +54,6 @@ pip install -r requirements.txt
 
 ![image alt](https://github.com/suman2807/crowd_behavior_analysis/blob/main/Screenshot%202025-03-26%20230719.png?raw=true)
 ![image alt](https://github.com/suman2807/crowd_behavior_analysis/blob/main/Screenshot%202025-03-26%20230838.png?raw=true)
+![image alt](https://github.com/suman2807/crowd_behavior_analysis/blob/main/Screenshot%202025-03-26%20230900.png?raw=true)
 
 
