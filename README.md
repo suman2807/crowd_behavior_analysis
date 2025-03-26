@@ -52,10 +52,5 @@ pip install -r requirements.txt
 - **YOLOv8**: Used for object detection in video frames.
 - **LSTM Model**: Predicts crowd behavior based on time-series movement patterns.
 
-## Future Enhancements
-- Implement real-time video feed analysis.
-- Deploy as a cloud-based service.
-
-## License
-This project is licensed under the MIT License.
+![image alt](https://github.com/suman2807/crowd_behavior_analysis/blob/main/Screenshot%202025-03-26%20230719.png?raw=true)
 
