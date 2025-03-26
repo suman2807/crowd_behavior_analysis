@@ -12,6 +12,18 @@ import os
 # Load models
 @st.cache_resource
 def load_models():
+    """Load YOLO and LSTM models.
+
+    This function initializes the YOLO model using the specified weights
+    file and attempts to load an LSTM model for crowd behavior prediction.
+    If the LSTM model fails to load, an error message is displayed, and the
+    function returns None for both models.
+
+    Returns:
+        tuple: A tuple containing the YOLO model and the LSTM model. If the
+        LSTM model fails to load, both elements of the tuple will be None.
+    """
+
     yolo_model = YOLO("yolov8n.pt")
     try:
         lstm_model = load_model("lstm_crowd_behavior.h5")
@@ -43,6 +55,41 @@ input_option = st.radio("Select Input Source:", ("Real-Time Drone/CCTV Feed", "P
 
 # Function to process frame
 def process_frame(frame, prev_positions, density_history, speed_history, time_history, frame_count):
+    """Process a video frame to analyze crowd behavior and annotate the frame.
+
+    This function performs object detection on the provided frame using a
+    YOLOv8 model to identify people. It calculates the density of people in
+    the frame, tracks their movements, and classifies their behavior based
+    on predefined rules. Additionally, it utilizes an LSTM model to predict
+    future behavior based on historical density and speed data. The function
+    annotates the frame with relevant information such as detected behavior,
+    density, and speed variance, and generates plots for density and speed
+    trends over time.
+
+    Args:
+        frame (numpy.ndarray): The current video frame to be processed.
+        prev_positions (list): A list of previous positions of tracked individuals.
+        density_history (list): A history of density values for LSTM prediction.
+        speed_history (list): A history of average speed values for LSTM prediction.
+        time_history (list): A history of frame counts for plotting purposes.
+        frame_count (int): The current count of processed frames.
+
+    Returns:
+        tuple: A tuple containing:
+            - annotated_frame (numpy.ndarray): The annotated video frame with
+            behavior information.
+            - num_people (int): The number of people detected in the frame.
+            - density (float): The calculated density of people in the frame.
+            - avg_speed (float): The average speed of tracked individuals.
+            - rule_behavior (str): The behavior classification based on rule-based
+            analysis.
+            - lstm_behavior (str): The behavior classification predicted by the LSTM
+            model.
+            - fig (matplotlib.figure.Figure): The generated figure containing
+            density and speed plots.
+            - frame_count (int): The updated count of processed frames.
+    """
+
     # YOLOv8 inference
     results = yolo_model(frame)
     filtered_boxes = [box for box in results[0].boxes if int(box.cls) == 0]  # Class 0 = person
